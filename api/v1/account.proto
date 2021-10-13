@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package task_system.scheduler.v1;
+
+
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+
+
+option go_package = ".;v1";
+
+service Account{
+  rpc Ping (Empty) returns (Result) {
+    option (google.api.http) = {
+      get: "/v1/ping"
+    };
+  }
+  rpc QuerySource (QuerySourceParam) returns (SourceInfo) {
+    option (google.api.http) = {
+      post: "/v1/example/get_source"
+      body: "*"
+      additional_bindings {
+        get: "/v2/example/get_source/{source_id}"
+      }
+    };
+  }
+}
+
+message Result{
+  int64 code = 1;
+  string message = 2;
+  google.protobuf.Any data = 3;
+}
+
+message Empty{
+
+}
+
+message QuerySourceParam{
+  uint64 source_id = 1;
+}
+
+message SourceInfo{
+  uint64 source_id = 1;
+  string text = 2;
+}
