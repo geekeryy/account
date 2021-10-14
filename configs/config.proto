@@ -24,20 +24,10 @@ message Config {
     (validate.rules).string = {min_len:3},
     (gogoproto.jsontag) = "pprof_addr"
   ];
-  string mongo_username = 5 [
-    (gogoproto.jsontag) = "mongo_username"
-  ];
-  string mongo_password = 6 [
-    (gogoproto.jsontag) = "mongo_password"
-  ];
-  string mongo_addr = 7 [
-    (validate.rules).string = {min_len:3},
-    (gogoproto.jsontag) = "mongo_addr"
-  ];
-  string mongo_database = 8 [
-    (gogoproto.jsontag) = "mongo_database"
-  ];
-  string apm_url = 9 [
+  string apm_url = 5 [
     (gogoproto.jsontag) = "apm_url"
+  ];
+  string mysql_conf = 6 [
+    (gogoproto.jsontag) = "mysql_conf"
   ];
 }

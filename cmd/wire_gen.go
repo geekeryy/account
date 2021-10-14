@@ -22,11 +22,10 @@ import (
 
 func InitApp(ctx context.Context, logger *xlog.Logger) *App {
 	configsInterface := configs.NewConfig(ctx)
-	collection := data.NewMongo(configsInterface)
-	dataData := data.NewData(collection)
-	workRepo := data.NewWorkRepo(dataData)
-	schedulerService := service.NewSchedulerService(configsInterface, logger, workRepo)
-	grpcServer := server.NewGrpcServer(schedulerService, configsInterface, logger)
+	dataData := data.NewData(configsInterface)
+	accountRepo := data.NewAccountRepo(dataData)
+	accountService := service.NewAccountService(configsInterface, accountRepo, logger)
+	grpcServer := server.NewGrpcServer(accountService, configsInterface, logger)
 	httpServer := server.NewHttpServer(ctx, configsInterface, logger)
 	app := newApp(ctx, grpcServer, httpServer, configsInterface)
 	return app

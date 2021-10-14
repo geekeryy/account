@@ -2,7 +2,6 @@ package configs
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"sync/atomic"
@@ -30,7 +29,6 @@ func NewConfig(ctx context.Context) Interface {
 	c := xconfig.New(
 		xconfig.WithContext(ctx),
 		xconfig.WithSource(apollo.NewSource(xenv.GetEnv(consts.ApolloUrl), consts.ApolloAppID, consts.ApolloCluster, consts.ApolloNamespace, xenv.GetEnv(consts.ApolloSecret))),
-		xconfig.WithDecoder(json.Unmarshal),
 	)
 	var tempConf Config
 	if err := c.Scan(&tempConf); err != nil {

@@ -1,31 +1,24 @@
 package data
 
 import (
-	"github.com/google/wire"
-	"go.mongodb.org/mongo-driver/mongo"
-
 	"account/configs"
-	"github.com/comeonjy/go-kit/pkg/xmongo"
+	"github.com/comeonjy/go-kit/pkg/xmysql"
+	"github.com/google/wire"
+	"gorm.io/gorm"
 )
 
-var ProviderSet = wire.NewSet(NewMongo, NewData, NewWorkRepo)
+var ProviderSet = wire.NewSet(NewData, NewAccountRepo)
 
 type Data struct {
-	Mongo *mongo.Collection
+	Account *gorm.DB
 }
 
-func NewMongo(cfg configs.Interface) *mongo.Collection {
-	xmongo.Init(xmongo.Config{
-		Username: cfg.Get().MongoUsername,
-		Password: cfg.Get().MongoPassword,
-		Addr:     cfg.Get().MongoAddr,
-		Database: cfg.Get().MongoDatabase,
-	})
-	return xmongo.Conn("user")
+func newAccountMysql(cfg configs.Interface) *gorm.DB {
+	return xmysql.New(cfg.Get().MysqlConf)
 }
 
-func NewData(client *mongo.Collection) *Data {
+func NewData(cfg configs.Interface) *Data {
 	return &Data{
-		Mongo: client,
+		Account: newAccountMysql(cfg),
 	}
 }

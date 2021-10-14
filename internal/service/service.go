@@ -16,16 +16,16 @@ var ProviderSet = wire.NewSet(NewAccountService)
 
 type AccountService struct {
 	v1.UnimplementedAccountServer
-	conf     configs.Interface
-	logger   *xlog.Logger
-	workRepo data.WorkRepo
+	conf        configs.Interface
+	logger      *xlog.Logger
+	accountRepo data.AccountRepo
 }
 
-func NewAccountService(conf configs.Interface, logger *xlog.Logger, workRepo data.WorkRepo) *AccountService {
+func NewAccountService(conf configs.Interface, accountRepo data.AccountRepo, logger *xlog.Logger) *AccountService {
 	return &AccountService{
-		conf:     conf,
-		workRepo: workRepo,
-		logger:   logger,
+		conf:        conf,
+		accountRepo: accountRepo,
+		logger:      logger,
 	}
 }
 
