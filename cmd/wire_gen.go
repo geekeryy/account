@@ -22,7 +22,7 @@ import (
 
 func InitApp(ctx context.Context, logger *xlog.Logger) *App {
 	configsInterface := configs.NewConfig(ctx)
-	dataData := data.NewData(configsInterface)
+	dataData := data.NewData(configsInterface, logger)
 	accountRepo := data.NewAccountRepo(dataData)
 	accountService := service.NewAccountService(configsInterface, accountRepo, logger)
 	grpcServer := server.NewGrpcServer(accountService, configsInterface, logger)

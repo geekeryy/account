@@ -19,7 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Result, error)
-	QuerySource(ctx context.Context, in *QuerySourceParam, opts ...grpc.CallOption) (*SourceInfo, error)
+	GetByID(ctx context.Context, in *GetByIDReq, opts ...grpc.CallOption) (*GetByIDResp, error)
 }
 
 type accountClient struct {
@@ -39,9 +39,9 @@ func (c *accountClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOp
 	return out, nil
 }
 
-func (c *accountClient) QuerySource(ctx context.Context, in *QuerySourceParam, opts ...grpc.CallOption) (*SourceInfo, error) {
-	out := new(SourceInfo)
-	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/QuerySource", in, out, opts...)
+func (c *accountClient) GetByID(ctx context.Context, in *GetByIDReq, opts ...grpc.CallOption) (*GetByIDResp, error) {
+	out := new(GetByIDResp)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/GetByID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (c *accountClient) QuerySource(ctx context.Context, in *QuerySourceParam, o
 // for forward compatibility
 type AccountServer interface {
 	Ping(context.Context, *Empty) (*Result, error)
-	QuerySource(context.Context, *QuerySourceParam) (*SourceInfo, error)
+	GetByID(context.Context, *GetByIDReq) (*GetByIDResp, error)
 	mustEmbedUnimplementedAccountServer()
 }
 
@@ -64,8 +64,8 @@ type UnimplementedAccountServer struct {
 func (UnimplementedAccountServer) Ping(context.Context, *Empty) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedAccountServer) QuerySource(context.Context, *QuerySourceParam) (*SourceInfo, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method QuerySource not implemented")
+func (UnimplementedAccountServer) GetByID(context.Context, *GetByIDReq) (*GetByIDResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
 }
 func (UnimplementedAccountServer) mustEmbedUnimplementedAccountServer() {}
 
@@ -98,20 +98,20 @@ func _Account_Ping_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Account_QuerySource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QuerySourceParam)
+func _Account_GetByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByIDReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServer).QuerySource(ctx, in)
+		return srv.(AccountServer).GetByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task_system.scheduler.v1.Account/QuerySource",
+		FullMethod: "/task_system.scheduler.v1.Account/GetByID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServer).QuerySource(ctx, req.(*QuerySourceParam))
+		return srv.(AccountServer).GetByID(ctx, req.(*GetByIDReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -128,8 +128,8 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Account_Ping_Handler,
 		},
 		{
-			MethodName: "QuerySource",
-			Handler:    _Account_QuerySource_Handler,
+			MethodName: "GetByID",
+			Handler:    _Account_GetByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

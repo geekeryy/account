@@ -175,90 +175,21 @@ var _ interface {
 	ErrorName() string
 } = EmptyValidationError{}
 
-// Validate checks the field values on QuerySourceParam with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
-func (m *QuerySourceParam) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for SourceId
-
-	return nil
-}
-
-// QuerySourceParamValidationError is the validation error returned by
-// QuerySourceParam.Validate if the designated constraints aren't met.
-type QuerySourceParamValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e QuerySourceParamValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e QuerySourceParamValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e QuerySourceParamValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e QuerySourceParamValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e QuerySourceParamValidationError) ErrorName() string { return "QuerySourceParamValidationError" }
-
-// Error satisfies the builtin error interface
-func (e QuerySourceParamValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sQuerySourceParam.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = QuerySourceParamValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = QuerySourceParamValidationError{}
-
-// Validate checks the field values on SourceInfo with the rules defined in the
+// Validate checks the field values on GetByIDReq with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
-func (m *SourceInfo) Validate() error {
+func (m *GetByIDReq) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	// no validation rules for SourceId
-
-	// no validation rules for Text
+	// no validation rules for Id
 
 	return nil
 }
 
-// SourceInfoValidationError is the validation error returned by
-// SourceInfo.Validate if the designated constraints aren't met.
-type SourceInfoValidationError struct {
+// GetByIDReqValidationError is the validation error returned by
+// GetByIDReq.Validate if the designated constraints aren't met.
+type GetByIDReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -266,22 +197,22 @@ type SourceInfoValidationError struct {
 }
 
 // Field function returns field value.
-func (e SourceInfoValidationError) Field() string { return e.field }
+func (e GetByIDReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e SourceInfoValidationError) Reason() string { return e.reason }
+func (e GetByIDReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e SourceInfoValidationError) Cause() error { return e.cause }
+func (e GetByIDReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e SourceInfoValidationError) Key() bool { return e.key }
+func (e GetByIDReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e SourceInfoValidationError) ErrorName() string { return "SourceInfoValidationError" }
+func (e GetByIDReqValidationError) ErrorName() string { return "GetByIDReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e SourceInfoValidationError) Error() string {
+func (e GetByIDReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -293,14 +224,14 @@ func (e SourceInfoValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sSourceInfo.%s: %s%s",
+		"invalid %sGetByIDReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = SourceInfoValidationError{}
+var _ error = GetByIDReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -308,4 +239,147 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = SourceInfoValidationError{}
+} = GetByIDReqValidationError{}
+
+// Validate checks the field values on GetByIDResp with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *GetByIDResp) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if v, ok := interface{}(m.GetUser()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetByIDRespValidationError{
+				field:  "User",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// GetByIDRespValidationError is the validation error returned by
+// GetByIDResp.Validate if the designated constraints aren't met.
+type GetByIDRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetByIDRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetByIDRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetByIDRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetByIDRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetByIDRespValidationError) ErrorName() string { return "GetByIDRespValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetByIDRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetByIDResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetByIDRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetByIDRespValidationError{}
+
+// Validate checks the field values on UserModel with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *UserModel) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	return nil
+}
+
+// UserModelValidationError is the validation error returned by
+// UserModel.Validate if the designated constraints aren't met.
+type UserModelValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserModelValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserModelValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserModelValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserModelValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserModelValidationError) ErrorName() string { return "UserModelValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserModelValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUserModel.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserModelValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserModelValidationError{}
