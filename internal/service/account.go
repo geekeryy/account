@@ -52,7 +52,7 @@ func (svc *AccountService) MiniLogin(ctx context.Context, in *v1.MiniLoginReq) (
 
 	bus := xjwt.Business{
 		UUID: user.UUID,
-		Role: uint(user.Role),
+		Role: user.Role,
 	}
 	marshal, err := json.Marshal(bus)
 	if err != nil {

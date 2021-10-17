@@ -3,7 +3,7 @@ module account
 go 1.17
 
 require (
-	github.com/comeonjy/go-kit v0.0.0-20211017060341-4de72dd324cc
+	github.com/comeonjy/go-kit v0.0.0-20211017140225-62f22716fd67
 	github.com/envoyproxy/protoc-gen-validate v0.6.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/uuid v1.3.0
@@ -24,7 +24,7 @@ require (
 
 require (
 	github.com/armon/go-radix v1.0.0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1 // indirect
 	github.com/elastic/go-licenser v0.3.1 // indirect
 	github.com/elastic/go-sysinfo v1.1.1 // indirect
 	github.com/elastic/go-windows v1.0.0 // indirect
