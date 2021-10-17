@@ -175,6 +175,291 @@ var _ interface {
 	ErrorName() string
 } = EmptyValidationError{}
 
+// Validate checks the field values on SmsLoginReq with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *SmsLoginReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if utf8.RuneCountInString(m.GetMobile()) < 1 {
+		return SmsLoginReqValidationError{
+			field:  "Mobile",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	if utf8.RuneCountInString(m.GetCode()) < 1 {
+		return SmsLoginReqValidationError{
+			field:  "Code",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	return nil
+}
+
+// SmsLoginReqValidationError is the validation error returned by
+// SmsLoginReq.Validate if the designated constraints aren't met.
+type SmsLoginReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SmsLoginReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SmsLoginReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SmsLoginReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SmsLoginReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SmsLoginReqValidationError) ErrorName() string { return "SmsLoginReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SmsLoginReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSmsLoginReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SmsLoginReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SmsLoginReqValidationError{}
+
+// Validate checks the field values on SmsLoginResp with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *SmsLoginResp) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Token
+
+	return nil
+}
+
+// SmsLoginRespValidationError is the validation error returned by
+// SmsLoginResp.Validate if the designated constraints aren't met.
+type SmsLoginRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SmsLoginRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SmsLoginRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SmsLoginRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SmsLoginRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SmsLoginRespValidationError) ErrorName() string { return "SmsLoginRespValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SmsLoginRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSmsLoginResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SmsLoginRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SmsLoginRespValidationError{}
+
+// Validate checks the field values on MiniLoginReq with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *MiniLoginReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if utf8.RuneCountInString(m.GetCode()) < 1 {
+		return MiniLoginReqValidationError{
+			field:  "Code",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	return nil
+}
+
+// MiniLoginReqValidationError is the validation error returned by
+// MiniLoginReq.Validate if the designated constraints aren't met.
+type MiniLoginReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MiniLoginReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MiniLoginReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MiniLoginReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MiniLoginReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MiniLoginReqValidationError) ErrorName() string { return "MiniLoginReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e MiniLoginReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMiniLoginReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MiniLoginReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MiniLoginReqValidationError{}
+
+// Validate checks the field values on MiniLoginResp with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *MiniLoginResp) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Token
+
+	return nil
+}
+
+// MiniLoginRespValidationError is the validation error returned by
+// MiniLoginResp.Validate if the designated constraints aren't met.
+type MiniLoginRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MiniLoginRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MiniLoginRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MiniLoginRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MiniLoginRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MiniLoginRespValidationError) ErrorName() string { return "MiniLoginRespValidationError" }
+
+// Error satisfies the builtin error interface
+func (e MiniLoginRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMiniLoginResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MiniLoginRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MiniLoginRespValidationError{}
+
 // Validate checks the field values on GetByIDReq with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
 func (m *GetByIDReq) Validate() error {

@@ -30,4 +30,22 @@ message Config {
   string mysql_conf = 6 [
     (gogoproto.jsontag) = "mysql_conf"
   ];
+  string ten_secret_id = 7 [
+    (gogoproto.jsontag) = "ten_secret_id"
+  ];
+  string ten_secret_key = 8 [
+    (gogoproto.jsontag) = "ten_secret_key"
+  ];
+  string ten_sms_conf = 9 [
+    (gogoproto.jsontag) = "ten_sms_conf"
+  ];
+  string wechat_mini_appid = 10 [
+    (gogoproto.jsontag) = "wechat_mini_appid"
+  ];
+  string wechat_mini_secret = 11 [
+    (gogoproto.jsontag) = "wechat_mini_secret"
+  ];
+  string jwt_key = 12 [
+    (gogoproto.jsontag) = "jwt_key"
+  ];
 }

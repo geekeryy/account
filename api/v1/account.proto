@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package task_system.scheduler.v1;
 
-
+import "validate/validate.proto";
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
 
@@ -15,6 +15,17 @@ service Account{
       get: "/v1/ping"
     };
   }
+  rpc SmsLogin(SmsLoginReq) returns (SmsLoginResp){
+    option (google.api.http) = {
+      post: "/v1/sms_login"
+    };
+  }
+  rpc MiniLogin(MiniLoginReq) returns (MiniLoginResp){
+    option (google.api.http) = {
+      get: "/v1/mini_login"
+    };
+  }
+
   rpc GetByID(GetByIDReq)returns(GetByIDResp){
     option (google.api.http) = {
       get:"/v1/user/{id}"
@@ -32,11 +43,33 @@ message Empty{
 
 }
 
+message  SmsLoginReq{
+  string mobile = 1 [
+    (validate.rules).string = {min_len:1}
+  ];
+  string code = 2 [
+    (validate.rules).string = {min_len:1}
+  ];
+}
+
+message SmsLoginResp{
+  string token = 1;
+}
+
+message MiniLoginReq{
+  string code = 1 [
+    (validate.rules).string = {min_len:1}
+  ];
+}
+message MiniLoginResp{
+  string token = 1;
+}
+
 message GetByIDReq {
   uint64 id = 1;
 }
 message GetByIDResp {
-    UserModel user = 1;
+  UserModel user = 1;
 }
 
 message UserModel{

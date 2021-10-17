@@ -18,7 +18,7 @@ func NewHttpServer(ctx context.Context, conf configs.Interface, logger *xlog.Log
 	mux := runtime.NewServeMux(runtime.WithErrorHandler(xmiddleware.HttpErrorHandler(logger)))
 	server := http.Server{
 		Addr:              conf.Get().HttpAddr,
-		Handler:           xmiddleware.HttpUse(mux, xmiddleware.HttpLogger(consts.TraceName, logger)),
+		Handler:           xmiddleware.HttpUse(mux, HttpToken, xmiddleware.HttpLogger(consts.TraceName, logger)),
 		ReadHeaderTimeout: 2 * time.Second,
 		WriteTimeout:      2 * time.Second,
 	}
@@ -26,4 +26,11 @@ func NewHttpServer(ctx context.Context, conf configs.Interface, logger *xlog.Log
 		panic("RegisterSchedulerHandlerFromEndpoint" + err.Error())
 	}
 	return &server
+}
+
+func HttpToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.Header.Set(runtime.MetadataHeaderPrefix+"Token", r.Header.Get("Token"))
+		next.ServeHTTP(w, r)
+	})
 }

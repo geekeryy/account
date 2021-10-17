@@ -72,6 +72,18 @@ func (m *Config) Validate() error {
 
 	// no validation rules for MysqlConf
 
+	// no validation rules for TenSecretId
+
+	// no validation rules for TenSecretKey
+
+	// no validation rules for TenSmsConf
+
+	// no validation rules for WechatMiniAppid
+
+	// no validation rules for WechatMiniSecret
+
+	// no validation rules for JwtKey
+
 	return nil
 }
 

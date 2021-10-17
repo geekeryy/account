@@ -3,12 +3,16 @@ module account
 go 1.17
 
 require (
-	github.com/comeonjy/go-kit v0.0.2-0.20211015110245-4a836e7794a1
+	github.com/comeonjy/go-kit v0.0.0-20211017060341-4de72dd324cc
 	github.com/envoyproxy/protoc-gen-validate v0.6.1
 	github.com/gogo/protobuf v1.3.2
+	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
+	github.com/jinzhu/copier v0.3.2
 	github.com/spf13/cobra v1.2.1
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.270
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.270
 	golang.org/x/net v0.0.0-20210908191846-a5e095526f91 // indirect
 	golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6 // indirect
 	golang.org/x/text v0.3.7 // indirect
@@ -20,15 +24,14 @@ require (
 
 require (
 	github.com/armon/go-radix v1.0.0 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/elastic/go-licenser v0.3.1 // indirect
 	github.com/elastic/go-sysinfo v1.1.1 // indirect
 	github.com/elastic/go-windows v1.0.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jcchavezs/porto v0.1.0 // indirect
-	github.com/jinzhu/copier v0.3.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901 // indirect

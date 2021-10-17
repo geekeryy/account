@@ -21,6 +21,14 @@ go install github.com/comeonjy/go-kit/cmd/kit
 kit new demo-project
 ```
 
+### SSL自签证书
+```shell
+openssl genrsa -des3 -out server.key 2048
+openssl req -new -key server.key -out server.csr
+openssl rsa -in server.key -out server.key
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+```
+
 ### 前置工作
 ```shell
 go install github.com/google/wire/cmd/wire

@@ -13,6 +13,10 @@ import (
 	"github.com/google/wire"
 )
 
+func init()  {
+	xenv.Init(consts.AppName, consts.EnvMap)
+}
+
 var ProviderSet = wire.NewSet(NewConfig)
 
 var _cfg atomic.Value
