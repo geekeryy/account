@@ -21,6 +21,7 @@ type AccountClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Result, error)
 	SmsLogin(ctx context.Context, in *SmsLoginReq, opts ...grpc.CallOption) (*SmsLoginResp, error)
 	MiniLogin(ctx context.Context, in *MiniLoginReq, opts ...grpc.CallOption) (*MiniLoginResp, error)
+	UpdatesUser(ctx context.Context, in *UpdatesUserReq, opts ...grpc.CallOption) (*Empty, error)
 	GetByID(ctx context.Context, in *GetByIDReq, opts ...grpc.CallOption) (*GetByIDResp, error)
 }
 
@@ -59,6 +60,15 @@ func (c *accountClient) MiniLogin(ctx context.Context, in *MiniLoginReq, opts ..
 	return out, nil
 }
 
+func (c *accountClient) UpdatesUser(ctx context.Context, in *UpdatesUserReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/UpdatesUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountClient) GetByID(ctx context.Context, in *GetByIDReq, opts ...grpc.CallOption) (*GetByIDResp, error) {
 	out := new(GetByIDResp)
 	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/GetByID", in, out, opts...)
@@ -75,6 +85,7 @@ type AccountServer interface {
 	Ping(context.Context, *Empty) (*Result, error)
 	SmsLogin(context.Context, *SmsLoginReq) (*SmsLoginResp, error)
 	MiniLogin(context.Context, *MiniLoginReq) (*MiniLoginResp, error)
+	UpdatesUser(context.Context, *UpdatesUserReq) (*Empty, error)
 	GetByID(context.Context, *GetByIDReq) (*GetByIDResp, error)
 	mustEmbedUnimplementedAccountServer()
 }
@@ -91,6 +102,9 @@ func (UnimplementedAccountServer) SmsLogin(context.Context, *SmsLoginReq) (*SmsL
 }
 func (UnimplementedAccountServer) MiniLogin(context.Context, *MiniLoginReq) (*MiniLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MiniLogin not implemented")
+}
+func (UnimplementedAccountServer) UpdatesUser(context.Context, *UpdatesUserReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatesUser not implemented")
 }
 func (UnimplementedAccountServer) GetByID(context.Context, *GetByIDReq) (*GetByIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
@@ -162,6 +176,24 @@ func _Account_MiniLogin_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Account_UpdatesUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatesUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).UpdatesUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/task_system.scheduler.v1.Account/UpdatesUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).UpdatesUser(ctx, req.(*UpdatesUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Account_GetByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetByIDReq)
 	if err := dec(in); err != nil {
@@ -198,6 +230,10 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MiniLogin",
 			Handler:    _Account_MiniLogin_Handler,
+		},
+		{
+			MethodName: "UpdatesUser",
+			Handler:    _Account_UpdatesUser_Handler,
 		},
 		{
 			MethodName: "GetByID",

@@ -25,6 +25,12 @@ service Account{
       get: "/v1/mini_login"
     };
   }
+  rpc UpdatesUser(UpdatesUserReq) returns (Empty){
+    option (google.api.http) = {
+      post: "/v1/user/updates",
+      body:"*",
+    };
+  }
 
   rpc GetByID(GetByIDReq)returns(GetByIDResp){
     option (google.api.http) = {
@@ -63,7 +69,23 @@ message MiniLoginReq{
 }
 message MiniLoginResp{
   string token = 1;
+  UserInfo user_info = 2;
 }
+
+message UserInfo{
+  string nick_name = 1[
+    (validate.rules).string = {min_len:1}
+  ];
+  string avatar_url = 2[
+    (validate.rules).string = {min_len:1}
+  ];
+}
+
+message UpdatesUserReq{
+  string nick_name = 2;
+  string avatar_url = 3;
+}
+
 
 message GetByIDReq {
   uint64 id = 1;

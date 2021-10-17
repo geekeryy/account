@@ -403,6 +403,16 @@ func (m *MiniLoginResp) Validate() error {
 
 	// no validation rules for Token
 
+	if v, ok := interface{}(m.GetUserInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MiniLoginRespValidationError{
+				field:  "UserInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -459,6 +469,153 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = MiniLoginRespValidationError{}
+
+// Validate checks the field values on UserInfo with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *UserInfo) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if utf8.RuneCountInString(m.GetNickName()) < 1 {
+		return UserInfoValidationError{
+			field:  "NickName",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	if utf8.RuneCountInString(m.GetAvatarUrl()) < 1 {
+		return UserInfoValidationError{
+			field:  "AvatarUrl",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	return nil
+}
+
+// UserInfoValidationError is the validation error returned by
+// UserInfo.Validate if the designated constraints aren't met.
+type UserInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserInfoValidationError) ErrorName() string { return "UserInfoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUserInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserInfoValidationError{}
+
+// Validate checks the field values on UpdatesUserReq with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *UpdatesUserReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for NickName
+
+	// no validation rules for AvatarUrl
+
+	return nil
+}
+
+// UpdatesUserReqValidationError is the validation error returned by
+// UpdatesUserReq.Validate if the designated constraints aren't met.
+type UpdatesUserReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdatesUserReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdatesUserReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdatesUserReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdatesUserReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdatesUserReqValidationError) ErrorName() string { return "UpdatesUserReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UpdatesUserReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdatesUserReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdatesUserReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdatesUserReqValidationError{}
 
 // Validate checks the field values on GetByIDReq with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.

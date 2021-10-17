@@ -35,6 +35,7 @@ type AccountRepo interface {
 	Get(ctx context.Context,id uint64) (*UserModel, error)
 	GetByWechatOpenid(ctx context.Context,user *UserModel) error
 	Create(ctx context.Context,user *UserModel) error
+	Updates(ctx context.Context, user *UserModel) error
 }
 
 func NewAccountRepo(data *Data) AccountRepo {

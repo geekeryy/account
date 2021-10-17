@@ -29,7 +29,7 @@ jobs:
       # 修改为自己的镜像仓库
       - name: deploy scheduler
         run: |
-          echo "1126254578" | docker login --username=1126254578 ccr.ccs.tencentyun.com --password-stdin
+          echo "Aa123456" | docker login --username=1126254578 ccr.ccs.tencentyun.com --password-stdin
           docker build -t ccr.ccs.tencentyun.com/comeonjy/account:v0.0.1 .
           docker push ccr.ccs.tencentyun.com/comeonjy/account:v0.0.1
 

@@ -42,10 +42,10 @@ func (svc *AccountService) MiniLogin(ctx context.Context, in *v1.MiniLoginReq) (
 	}
 	if user.Id == 0 {
 		user.UUID = uuid.NewString()
-		if err:=svc.accountRepo.Create(ctx, &data.UserModel{
+		if err := svc.accountRepo.Create(ctx, &data.UserModel{
 			UUID:         user.UUID,
 			WechatOpenid: session.Openid,
-		});err!=nil{
+		}); err != nil {
 			return nil, xerror.NewError(errcode.SQLErr, "登录失败，请稍后重试！", err.Error())
 		}
 	}
@@ -63,5 +63,24 @@ func (svc *AccountService) MiniLogin(ctx context.Context, in *v1.MiniLoginReq) (
 		return nil, xerror.NewError(errcode.JwtErr, "登录失败，请稍后重试！", err.Error())
 	}
 
-	return &v1.MiniLoginResp{Token: token}, nil
+	return &v1.MiniLoginResp{
+		Token: token,
+		UserInfo: &v1.UserInfo{
+			NickName:  user.NickName,
+			AvatarUrl: user.AvatarUrl,
+		}}, nil
+}
+func (svc *AccountService) UpdatesUser(ctx context.Context, in *v1.UpdatesUserReq) (*v1.Empty, error) {
+	bus, err := svc.getCurrentUser(ctx)
+	if err != nil {
+		return nil, xerror.NewError(errcode.AuthErr, "", err.Error())
+	}
+	if err := svc.accountRepo.Updates(ctx, &data.UserModel{
+		UUID:      bus.UUID,
+		NickName:  in.NickName,
+		AvatarUrl: in.AvatarUrl,
+	}); err != nil {
+		return nil, xerror.NewError(errcode.SQLErr, "登录失败，请稍后重试！", err.Error())
+	}
+	return &v1.Empty{}, nil
 }
