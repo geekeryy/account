@@ -5,6 +5,7 @@ const (
 	AppName    = "account"
 	AppVersion = "v1.0"
 
+	// TODO 优化掉
 	TraceName = "trace_id" // trace名
 )
 

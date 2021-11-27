@@ -15,6 +15,11 @@ service Account{
       get: "/v1/ping"
     };
   }
+  rpc SendMsgCode(SendMsgCodeReq) returns (Empty){
+    option (google.api.http) = {
+      post: "/v1/send_msg_code"
+    };
+  }
   rpc SmsLogin(SmsLoginReq) returns (SmsLoginResp){
     option (google.api.http) = {
       post: "/v1/sms_login"
@@ -47,6 +52,12 @@ message Result{
 
 message Empty{
 
+}
+
+message SendMsgCodeReq{
+  string mobile = 1 [
+    (validate.rules).string = {min_len:1}
+  ];
 }
 
 message  SmsLoginReq{

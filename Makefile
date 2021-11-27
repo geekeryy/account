@@ -1,6 +1,7 @@
 
 # 自动生成文件
 g:
+    go mod tidy
 	go generate -v .
 
 # 代码检查

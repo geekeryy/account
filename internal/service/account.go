@@ -3,15 +3,21 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"math/rand"
 	"time"
 
 	v1 "account/api/v1"
 	"account/internal/data"
 	"account/pkg/errcode"
+	"account/pkg/redis"
+	"account/pkg/util"
 	"github.com/comeonjy/go-kit/pkg/xerror"
 	"github.com/comeonjy/go-kit/pkg/xjwt"
 	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (svc *AccountService) GetByID(ctx context.Context, in *v1.GetByIDReq) (*v1.GetByIDResp, error) {
@@ -83,4 +89,20 @@ func (svc *AccountService) UpdatesUser(ctx context.Context, in *v1.UpdatesUserRe
 		return nil, xerror.NewError(errcode.SQLErr, "登录失败，请稍后重试！", err.Error())
 	}
 	return &v1.Empty{}, nil
+}
+
+func (svc *AccountService) SendMsgCode(ctx context.Context, in *v1.SendMsgCodeReq) (*v1.Empty, error) {
+	rand.Seed(time.Now().Unix())
+	code := rand.Intn(10000)
+	if err := svc.redis.Set(ctx, fmt.Sprintf(redis.SmsLoginCode, util.Md5(in.GetMobile())), code, 5*time.Minute).Err(); err != nil {
+		return nil, xerror.NewError(errcode.RedisErr, "发送失败，请重新发送", err.Error())
+	}
+	if err := svc.sms.SendCode(in.Mobile, code); err != nil {
+		return nil, xerror.NewError(errcode.YunPianErr, "发送失败，请重新发送", err.Error())
+	}
+	return nil, nil
+}
+
+func (svc *AccountService) SmsLogin(ctx context.Context, in *v1.SmsLoginReq) (*v1.SmsLoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SmsLogin not implemented")
 }

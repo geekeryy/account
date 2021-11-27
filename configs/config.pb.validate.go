@@ -84,6 +84,10 @@ func (m *Config) Validate() error {
 
 	// no validation rules for JwtKey
 
+	// no validation rules for YunpianApiKey
+
+	// no validation rules for RedisOption
+
 	return nil
 }
 

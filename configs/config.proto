@@ -48,4 +48,10 @@ message Config {
   string jwt_key = 12 [
     (gogoproto.jsontag) = "jwt_key"
   ];
+  string yunpian_api_key = 13 [
+    (gogoproto.jsontag) = "yunpian_api_key"
+  ];
+  string redis_option = 14 [
+    (gogoproto.jsontag) = "redis_option"
+  ];
 }
