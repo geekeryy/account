@@ -37,5 +37,4 @@ jobs:
         run: |
           branch=$(git branch --show-current)
           commit=$(git log -1 --pretty=format:"%cn %s")
-          curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"构建成功 \nserver: account \nauther: '${branch}' \ncommit: '${commit}' "}}' https://open.feishu.cn/open-apis/bot/v2/hook/67c37caa-a7c2-44b3-8726-b784081c2102
-          echo 'success'
+          curl -X POST -H "Content-Type: application/json" -d "{\"msg_type\":\"text\",\"content\":{\"text\":\"构建成功 \nserver: account \nauther: '${branch}' \ncommit: '${commit}' \"}}" https://open.feishu.cn/open-apis/bot/v2/hook/67c37caa-a7c2-44b3-8726-b784081c2102
