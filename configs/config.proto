@@ -54,4 +54,8 @@ message Config {
   string redis_option = 14 [
     (gogoproto.jsontag) = "redis_option"
   ];
+  string email = 15 [
+    (validate.rules).string = {email:true},
+    (gogoproto.jsontag) = "email"
+  ];
 }

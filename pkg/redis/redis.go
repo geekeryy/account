@@ -4,6 +4,7 @@
 package redis
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/go-redis/redis/v8"
@@ -23,6 +24,9 @@ func NewClient(confStr string) *Client {
 		Password: opt.Password,
 		DB:       opt.DB,
 	})
+	if err := rdb.Ping(context.Background()).Err(); err != nil {
+		panic(err.Error())
+	}
 	return &Client{
 		rdb,
 	}

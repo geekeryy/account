@@ -14,6 +14,8 @@ const (
 	RedisErr                         // Redis错误
 	AuthErr                          // 请登录
 	YunPianErr                       // 云片网错误
+	EmailErr                         // 邮件发送失败
+	Invalid                          // 非法请求
 )
 
 func (i Code) GetCode() uint32 {

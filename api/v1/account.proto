@@ -15,14 +15,16 @@ service Account{
       get: "/v1/ping"
     };
   }
-  rpc SendMsgCode(SendMsgCodeReq) returns (Empty){
+  rpc SendVerificationCode(SendVerificationCodeReq) returns (Empty){
     option (google.api.http) = {
-      post: "/v1/send_msg_code"
+      post: "/v1/send_verification_code",
+      body: "*"
     };
   }
-  rpc SmsLogin(SmsLoginReq) returns (SmsLoginResp){
+  rpc Login(LoginReq) returns (LoginResp){
     option (google.api.http) = {
-      post: "/v1/sms_login"
+      post: "/v1/login",
+      body: "*"
     };
   }
   rpc MiniLogin(MiniLoginReq) returns (MiniLoginResp){
@@ -54,22 +56,31 @@ message Empty{
 
 }
 
-message SendMsgCodeReq{
-  string mobile = 1 [
+message SendVerificationCodeReq{
+  string account = 1 [
     (validate.rules).string = {min_len:1}
+  ];
+  string type = 2 [
+    (validate.rules).string = {in:["mobile", "email"]}
   ];
 }
 
-message  SmsLoginReq{
-  string mobile = 1 [
+message LoginReq{
+  string account = 1 [
     (validate.rules).string = {min_len:1}
   ];
-  string code = 2 [
-    (validate.rules).string = {min_len:1}
+  string password = 2 [
+    (validate.rules).string = {min_len:1,ignore_empty:true}
+  ];
+  string code = 3 [
+    (validate.rules).string = {min_len:1,ignore_empty:true}
+  ];
+  string type = 4 [
+    (validate.rules).string = {in:["mobile", "email", "password"]}
   ];
 }
 
-message SmsLoginResp{
+message LoginResp{
   string token = 1;
 }
 

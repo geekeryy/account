@@ -11,6 +11,7 @@ import (
 	"account/pkg/redis"
 	"account/pkg/wechat"
 	"account/pkg/yunpian"
+	"github.com/comeonjy/go-kit/pkg/xemail"
 	"github.com/comeonjy/go-kit/pkg/xjwt"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 	"github.com/google/wire"
@@ -27,6 +28,7 @@ type AccountService struct {
 	mini        *wechat.Mini
 	sms         *yunpian.Client
 	redis       *redis.Client
+	email       *xemail.Client
 }
 
 func NewAccountService(conf configs.Interface, accountRepo data.AccountRepo, logger *xlog.Logger) *AccountService {
@@ -37,7 +39,8 @@ func NewAccountService(conf configs.Interface, accountRepo data.AccountRepo, log
 		logger:      logger,
 		mini:        wechat.NewMini(conf.Get().WechatMiniAppid, conf.Get().WechatMiniSecret),
 		sms:         yunpian.NewClient(conf.Get().YunpianApiKey),
-		redis:       redis.NewClient(conf.Get().MysqlConf),
+		redis:       redis.NewClient(conf.Get().RedisOption),
+		email:       xemail.New(conf.Get().Email),
 	}
 }
 

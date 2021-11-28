@@ -26,12 +26,12 @@ func NewClient(apiKey string) *Client {
 	return &Client{apiKey: apiKey}
 }
 
-func (y Client) SendCode(mobile string, code int) error {
+func (c Client) SendCode(mobile string, code int) error {
 
 	httpCli := http.DefaultClient
 
 	data := url.Values{}
-	data.Set("apikey", y.apiKey)
+	data.Set("apikey", c.apiKey)
 	data.Set("mobile", mobile)
 	data.Set("text", fmt.Sprintf(msgTemplate, code))
 

@@ -175,27 +175,34 @@ var _ interface {
 	ErrorName() string
 } = EmptyValidationError{}
 
-// Validate checks the field values on SendMsgCodeReq with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *SendMsgCodeReq) Validate() error {
+// Validate checks the field values on SendVerificationCodeReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *SendVerificationCodeReq) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	if utf8.RuneCountInString(m.GetMobile()) < 1 {
-		return SendMsgCodeReqValidationError{
-			field:  "Mobile",
+	if utf8.RuneCountInString(m.GetAccount()) < 1 {
+		return SendVerificationCodeReqValidationError{
+			field:  "Account",
 			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	if _, ok := _SendVerificationCodeReq_Type_InLookup[m.GetType()]; !ok {
+		return SendVerificationCodeReqValidationError{
+			field:  "Type",
+			reason: "value must be in list [mobile email]",
 		}
 	}
 
 	return nil
 }
 
-// SendMsgCodeReqValidationError is the validation error returned by
-// SendMsgCodeReq.Validate if the designated constraints aren't met.
-type SendMsgCodeReqValidationError struct {
+// SendVerificationCodeReqValidationError is the validation error returned by
+// SendVerificationCodeReq.Validate if the designated constraints aren't met.
+type SendVerificationCodeReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -203,22 +210,24 @@ type SendMsgCodeReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e SendMsgCodeReqValidationError) Field() string { return e.field }
+func (e SendVerificationCodeReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e SendMsgCodeReqValidationError) Reason() string { return e.reason }
+func (e SendVerificationCodeReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e SendMsgCodeReqValidationError) Cause() error { return e.cause }
+func (e SendVerificationCodeReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e SendMsgCodeReqValidationError) Key() bool { return e.key }
+func (e SendVerificationCodeReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e SendMsgCodeReqValidationError) ErrorName() string { return "SendMsgCodeReqValidationError" }
+func (e SendVerificationCodeReqValidationError) ErrorName() string {
+	return "SendVerificationCodeReqValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e SendMsgCodeReqValidationError) Error() string {
+func (e SendVerificationCodeReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -230,14 +239,14 @@ func (e SendMsgCodeReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sSendMsgCodeReq.%s: %s%s",
+		"invalid %sSendVerificationCodeReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = SendMsgCodeReqValidationError{}
+var _ error = SendVerificationCodeReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -245,36 +254,62 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = SendMsgCodeReqValidationError{}
+} = SendVerificationCodeReqValidationError{}
 
-// Validate checks the field values on SmsLoginReq with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *SmsLoginReq) Validate() error {
+var _SendVerificationCodeReq_Type_InLookup = map[string]struct{}{
+	"mobile": {},
+	"email":  {},
+}
+
+// Validate checks the field values on LoginReq with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *LoginReq) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	if utf8.RuneCountInString(m.GetMobile()) < 1 {
-		return SmsLoginReqValidationError{
-			field:  "Mobile",
+	if utf8.RuneCountInString(m.GetAccount()) < 1 {
+		return LoginReqValidationError{
+			field:  "Account",
 			reason: "value length must be at least 1 runes",
 		}
 	}
 
-	if utf8.RuneCountInString(m.GetCode()) < 1 {
-		return SmsLoginReqValidationError{
-			field:  "Code",
-			reason: "value length must be at least 1 runes",
+	if m.GetPassword() != "" {
+
+		if utf8.RuneCountInString(m.GetPassword()) < 1 {
+			return LoginReqValidationError{
+				field:  "Password",
+				reason: "value length must be at least 1 runes",
+			}
+		}
+
+	}
+
+	if m.GetCode() != "" {
+
+		if utf8.RuneCountInString(m.GetCode()) < 1 {
+			return LoginReqValidationError{
+				field:  "Code",
+				reason: "value length must be at least 1 runes",
+			}
+		}
+
+	}
+
+	if _, ok := _LoginReq_Type_InLookup[m.GetType()]; !ok {
+		return LoginReqValidationError{
+			field:  "Type",
+			reason: "value must be in list [mobile email password]",
 		}
 	}
 
 	return nil
 }
 
-// SmsLoginReqValidationError is the validation error returned by
-// SmsLoginReq.Validate if the designated constraints aren't met.
-type SmsLoginReqValidationError struct {
+// LoginReqValidationError is the validation error returned by
+// LoginReq.Validate if the designated constraints aren't met.
+type LoginReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -282,22 +317,22 @@ type SmsLoginReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e SmsLoginReqValidationError) Field() string { return e.field }
+func (e LoginReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e SmsLoginReqValidationError) Reason() string { return e.reason }
+func (e LoginReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e SmsLoginReqValidationError) Cause() error { return e.cause }
+func (e LoginReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e SmsLoginReqValidationError) Key() bool { return e.key }
+func (e LoginReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e SmsLoginReqValidationError) ErrorName() string { return "SmsLoginReqValidationError" }
+func (e LoginReqValidationError) ErrorName() string { return "LoginReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e SmsLoginReqValidationError) Error() string {
+func (e LoginReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -309,14 +344,14 @@ func (e SmsLoginReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sSmsLoginReq.%s: %s%s",
+		"invalid %sLoginReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = SmsLoginReqValidationError{}
+var _ error = LoginReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -324,12 +359,17 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = SmsLoginReqValidationError{}
+} = LoginReqValidationError{}
 
-// Validate checks the field values on SmsLoginResp with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *SmsLoginResp) Validate() error {
+var _LoginReq_Type_InLookup = map[string]struct{}{
+	"mobile":   {},
+	"email":    {},
+	"password": {},
+}
+
+// Validate checks the field values on LoginResp with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *LoginResp) Validate() error {
 	if m == nil {
 		return nil
 	}
@@ -339,9 +379,9 @@ func (m *SmsLoginResp) Validate() error {
 	return nil
 }
 
-// SmsLoginRespValidationError is the validation error returned by
-// SmsLoginResp.Validate if the designated constraints aren't met.
-type SmsLoginRespValidationError struct {
+// LoginRespValidationError is the validation error returned by
+// LoginResp.Validate if the designated constraints aren't met.
+type LoginRespValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -349,22 +389,22 @@ type SmsLoginRespValidationError struct {
 }
 
 // Field function returns field value.
-func (e SmsLoginRespValidationError) Field() string { return e.field }
+func (e LoginRespValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e SmsLoginRespValidationError) Reason() string { return e.reason }
+func (e LoginRespValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e SmsLoginRespValidationError) Cause() error { return e.cause }
+func (e LoginRespValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e SmsLoginRespValidationError) Key() bool { return e.key }
+func (e LoginRespValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e SmsLoginRespValidationError) ErrorName() string { return "SmsLoginRespValidationError" }
+func (e LoginRespValidationError) ErrorName() string { return "LoginRespValidationError" }
 
 // Error satisfies the builtin error interface
-func (e SmsLoginRespValidationError) Error() string {
+func (e LoginRespValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -376,14 +416,14 @@ func (e SmsLoginRespValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sSmsLoginResp.%s: %s%s",
+		"invalid %sLoginResp.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = SmsLoginRespValidationError{}
+var _ error = LoginRespValidationError{}
 
 var _ interface {
 	Field() string
@@ -391,7 +431,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = SmsLoginRespValidationError{}
+} = LoginRespValidationError{}
 
 // Validate checks the field values on MiniLoginReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
