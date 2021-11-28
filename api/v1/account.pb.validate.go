@@ -433,6 +433,142 @@ var _ interface {
 	ErrorName() string
 } = LoginRespValidationError{}
 
+// Validate checks the field values on GetMiniQRCodeReq with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *GetMiniQRCodeReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Code
+
+	return nil
+}
+
+// GetMiniQRCodeReqValidationError is the validation error returned by
+// GetMiniQRCodeReq.Validate if the designated constraints aren't met.
+type GetMiniQRCodeReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMiniQRCodeReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMiniQRCodeReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMiniQRCodeReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMiniQRCodeReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMiniQRCodeReqValidationError) ErrorName() string { return "GetMiniQRCodeReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetMiniQRCodeReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMiniQRCodeReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMiniQRCodeReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMiniQRCodeReqValidationError{}
+
+// Validate checks the field values on GetMiniQRCodeResp with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *GetMiniQRCodeResp) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Qrcode
+
+	return nil
+}
+
+// GetMiniQRCodeRespValidationError is the validation error returned by
+// GetMiniQRCodeResp.Validate if the designated constraints aren't met.
+type GetMiniQRCodeRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMiniQRCodeRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMiniQRCodeRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMiniQRCodeRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMiniQRCodeRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMiniQRCodeRespValidationError) ErrorName() string {
+	return "GetMiniQRCodeRespValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMiniQRCodeRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMiniQRCodeResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMiniQRCodeRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMiniQRCodeRespValidationError{}
+
 // Validate checks the field values on MiniLoginReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.

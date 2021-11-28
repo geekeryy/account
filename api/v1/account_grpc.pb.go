@@ -19,10 +19,17 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Result, error)
+	// 发送验证码
 	SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Empty, error)
+	// 登录
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+	// 获取小程序授权登录二维码
+	GetMiniQRCode(ctx context.Context, in *GetMiniQRCodeReq, opts ...grpc.CallOption) (*GetMiniQRCodeResp, error)
+	// 小程序登录
 	MiniLogin(ctx context.Context, in *MiniLoginReq, opts ...grpc.CallOption) (*MiniLoginResp, error)
+	// 更新用户信息
 	UpdatesUser(ctx context.Context, in *UpdatesUserReq, opts ...grpc.CallOption) (*Empty, error)
+	// 获取用户信息
 	GetByID(ctx context.Context, in *GetByIDReq, opts ...grpc.CallOption) (*GetByIDResp, error)
 }
 
@@ -61,6 +68,15 @@ func (c *accountClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *accountClient) GetMiniQRCode(ctx context.Context, in *GetMiniQRCodeReq, opts ...grpc.CallOption) (*GetMiniQRCodeResp, error) {
+	out := new(GetMiniQRCodeResp)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/GetMiniQRCode", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountClient) MiniLogin(ctx context.Context, in *MiniLoginReq, opts ...grpc.CallOption) (*MiniLoginResp, error) {
 	out := new(MiniLoginResp)
 	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/MiniLogin", in, out, opts...)
@@ -93,10 +109,17 @@ func (c *accountClient) GetByID(ctx context.Context, in *GetByIDReq, opts ...grp
 // for forward compatibility
 type AccountServer interface {
 	Ping(context.Context, *Empty) (*Result, error)
+	// 发送验证码
 	SendVerificationCode(context.Context, *SendVerificationCodeReq) (*Empty, error)
+	// 登录
 	Login(context.Context, *LoginReq) (*LoginResp, error)
+	// 获取小程序授权登录二维码
+	GetMiniQRCode(context.Context, *GetMiniQRCodeReq) (*GetMiniQRCodeResp, error)
+	// 小程序登录
 	MiniLogin(context.Context, *MiniLoginReq) (*MiniLoginResp, error)
+	// 更新用户信息
 	UpdatesUser(context.Context, *UpdatesUserReq) (*Empty, error)
+	// 获取用户信息
 	GetByID(context.Context, *GetByIDReq) (*GetByIDResp, error)
 	mustEmbedUnimplementedAccountServer()
 }
@@ -113,6 +136,9 @@ func (UnimplementedAccountServer) SendVerificationCode(context.Context, *SendVer
 }
 func (UnimplementedAccountServer) Login(context.Context, *LoginReq) (*LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAccountServer) GetMiniQRCode(context.Context, *GetMiniQRCodeReq) (*GetMiniQRCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMiniQRCode not implemented")
 }
 func (UnimplementedAccountServer) MiniLogin(context.Context, *MiniLoginReq) (*MiniLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MiniLogin not implemented")
@@ -190,6 +216,24 @@ func _Account_Login_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Account_GetMiniQRCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMiniQRCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).GetMiniQRCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/task_system.scheduler.v1.Account/GetMiniQRCode",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).GetMiniQRCode(ctx, req.(*GetMiniQRCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Account_MiniLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MiniLoginReq)
 	if err := dec(in); err != nil {
@@ -262,6 +306,10 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _Account_Login_Handler,
+		},
+		{
+			MethodName: "GetMiniQRCode",
+			Handler:    _Account_GetMiniQRCode_Handler,
 		},
 		{
 			MethodName: "MiniLogin",

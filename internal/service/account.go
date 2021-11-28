@@ -20,6 +20,8 @@ import (
 	"github.com/comeonjy/go-kit/pkg/xjwt"
 	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (svc *AccountService) GetByID(ctx context.Context, in *v1.GetByIDReq) (*v1.GetByIDResp, error) {
@@ -175,4 +177,12 @@ func (svc *AccountService) Login(ctx context.Context, in *v1.LoginReq) (*v1.Logi
 	}
 
 	return &v1.LoginResp{Token: token}, nil
+}
+
+func (svc *AccountService) GetMiniQRCode(ctx context.Context,in *v1.GetMiniQRCodeReq) (*v1.GetMiniQRCodeResp, error) {
+	// redis 存储随机数
+	// 返回小程序码+随机数
+	// 手机扫码调起小程序，登录后同步给随机数设置token
+	// 前端轮询随机数，成功后获取到token
+	return nil, status.Errorf(codes.Unimplemented, "method GetMiniQRCode not implemented")
 }
