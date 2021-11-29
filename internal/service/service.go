@@ -5,15 +5,17 @@ import (
 	"encoding/json"
 	"errors"
 
-	"account/pkg/wechat"
-	"github.com/comeonjy/go-kit/pkg/xjwt"
-	"github.com/google/wire"
-	"google.golang.org/grpc/metadata"
-
 	v1 "account/api/v1"
 	"account/configs"
 	"account/internal/data"
+	"account/pkg/redis"
+	"account/pkg/wechat"
+	"account/pkg/yunpian"
+	"github.com/comeonjy/go-kit/pkg/xemail"
+	"github.com/comeonjy/go-kit/pkg/xjwt"
 	"github.com/comeonjy/go-kit/pkg/xlog"
+	"github.com/google/wire"
+	"google.golang.org/grpc/metadata"
 )
 
 var ProviderSet = wire.NewSet(NewAccountService)
@@ -24,6 +26,9 @@ type AccountService struct {
 	logger      *xlog.Logger
 	accountRepo data.AccountRepo
 	mini        *wechat.Mini
+	sms         *yunpian.Client
+	redis       *redis.Client
+	email       *xemail.Client
 }
 
 func NewAccountService(conf configs.Interface, accountRepo data.AccountRepo, logger *xlog.Logger) *AccountService {
@@ -33,6 +38,9 @@ func NewAccountService(conf configs.Interface, accountRepo data.AccountRepo, log
 		accountRepo: accountRepo,
 		logger:      logger,
 		mini:        wechat.NewMini(conf.Get().WechatMiniAppid, conf.Get().WechatMiniSecret),
+		sms:         yunpian.NewClient(conf.Get().YunpianApiKey),
+		redis:       redis.NewClient(conf.Get().RedisOption),
+		email:       xemail.New(conf.Get().Email),
 	}
 }
 

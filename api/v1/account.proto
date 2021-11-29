@@ -15,16 +15,39 @@ service Account{
       get: "/v1/ping"
     };
   }
-  rpc SmsLogin(SmsLoginReq) returns (SmsLoginResp){
+
+  // 发送验证码
+  rpc SendVerificationCode(SendVerificationCodeReq) returns (Empty){
     option (google.api.http) = {
-      post: "/v1/sms_login"
+      post: "/v1/send_verification_code",
+      body: "*"
     };
   }
+
+  // 登录
+  rpc Login(LoginReq) returns (LoginResp){
+    option (google.api.http) = {
+      post: "/v1/login",
+      body: "*"
+    };
+  }
+
+  // 获取小程序授权登录二维码
+  rpc GetMiniQRCode(GetMiniQRCodeReq) returns (GetMiniQRCodeResp){
+    option (google.api.http) = {
+      post: "/v1/get_mini_qrcode",
+      body: "*"
+    };
+  }
+
+  // 小程序登录
   rpc MiniLogin(MiniLoginReq) returns (MiniLoginResp){
     option (google.api.http) = {
       get: "/v1/mini_login"
     };
   }
+
+  // 更新用户信息
   rpc UpdatesUser(UpdatesUserReq) returns (Empty){
     option (google.api.http) = {
       post: "/v1/user/updates",
@@ -32,6 +55,7 @@ service Account{
     };
   }
 
+  // 获取用户信息
   rpc GetByID(GetByIDReq)returns(GetByIDResp){
     option (google.api.http) = {
       get:"/v1/user/{id}"
@@ -49,17 +73,39 @@ message Empty{
 
 }
 
-message  SmsLoginReq{
-  string mobile = 1 [
+message SendVerificationCodeReq{
+  string account = 1 [
     (validate.rules).string = {min_len:1}
   ];
-  string code = 2 [
-    (validate.rules).string = {min_len:1}
+  string type = 2 [
+    (validate.rules).string = {in:["mobile", "email"]}
   ];
 }
 
-message SmsLoginResp{
+message LoginReq{
+  string account = 1 [
+    (validate.rules).string = {min_len:1}
+  ];
+  string password = 2 [
+    (validate.rules).string = {min_len:1,ignore_empty:true}
+  ];
+  string code = 3 [
+    (validate.rules).string = {min_len:1,ignore_empty:true}
+  ];
+  string type = 4 [
+    (validate.rules).string = {in:["mobile", "email", "password"]}
+  ];
+}
+
+message LoginResp{
   string token = 1;
+}
+
+message GetMiniQRCodeReq{
+  string code = 1;
+}
+message GetMiniQRCodeResp{
+  string qrcode = 1;
 }
 
 message MiniLoginReq{

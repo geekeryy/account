@@ -32,10 +32,13 @@ func newAccountMysql(cfg configs.Interface, logger *xlog.Logger) *gorm.DB {
 }
 
 type AccountRepo interface {
-	Get(ctx context.Context,id uint64) (*UserModel, error)
-	GetByWechatOpenid(ctx context.Context,user *UserModel) error
-	Create(ctx context.Context,user *UserModel) error
+	Get(ctx context.Context, id uint64) (*UserModel, error)
+	GetByWechatOpenid(ctx context.Context, user *UserModel) error
+	Create(ctx context.Context, user *UserModel) error
 	Updates(ctx context.Context, user *UserModel) error
+	GetByMobile(ctx context.Context, user *UserModel) error
+	GetByEmail(ctx context.Context, user *UserModel) error
+	GetByAccount(ctx context.Context, account string) (*UserModel, error)
 }
 
 func NewAccountRepo(data *Data) AccountRepo {

@@ -16,12 +16,16 @@ func _() {
 	_ = x[JwtErr-1005]
 	_ = x[MarshalErr-1006]
 	_ = x[SQLErr-1007]
-	_ = x[AuthErr-1008]
+	_ = x[RedisErr-1008]
+	_ = x[AuthErr-1009]
+	_ = x[YunPianErr-1010]
+	_ = x[EmailErr-1011]
+	_ = x[Invalid-1012]
 }
 
-const _Code_name = "参数错误资源不存在系统错误复制错误微信错误Token错误数据格式化错误数据库错误请登录"
+const _Code_name = "参数错误资源不存在系统错误复制错误微信错误Token错误数据格式化错误数据库错误Redis错误请登录云片网错误邮件发送失败非法请求"
 
-var _Code_index = [...]uint8{0, 12, 27, 39, 51, 63, 74, 95, 110, 119}
+var _Code_index = [...]uint8{0, 12, 27, 39, 51, 63, 74, 95, 110, 121, 130, 145, 163, 175}
 
 func (i Code) String() string {
 	i -= 1000

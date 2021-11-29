@@ -19,9 +19,17 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Result, error)
-	SmsLogin(ctx context.Context, in *SmsLoginReq, opts ...grpc.CallOption) (*SmsLoginResp, error)
+	// 发送验证码
+	SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Empty, error)
+	// 登录
+	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+	// 获取小程序授权登录二维码
+	GetMiniQRCode(ctx context.Context, in *GetMiniQRCodeReq, opts ...grpc.CallOption) (*GetMiniQRCodeResp, error)
+	// 小程序登录
 	MiniLogin(ctx context.Context, in *MiniLoginReq, opts ...grpc.CallOption) (*MiniLoginResp, error)
+	// 更新用户信息
 	UpdatesUser(ctx context.Context, in *UpdatesUserReq, opts ...grpc.CallOption) (*Empty, error)
+	// 获取用户信息
 	GetByID(ctx context.Context, in *GetByIDReq, opts ...grpc.CallOption) (*GetByIDResp, error)
 }
 
@@ -42,9 +50,27 @@ func (c *accountClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOp
 	return out, nil
 }
 
-func (c *accountClient) SmsLogin(ctx context.Context, in *SmsLoginReq, opts ...grpc.CallOption) (*SmsLoginResp, error) {
-	out := new(SmsLoginResp)
-	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/SmsLogin", in, out, opts...)
+func (c *accountClient) SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/SendVerificationCode", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error) {
+	out := new(LoginResp)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountClient) GetMiniQRCode(ctx context.Context, in *GetMiniQRCodeReq, opts ...grpc.CallOption) (*GetMiniQRCodeResp, error) {
+	out := new(GetMiniQRCodeResp)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/GetMiniQRCode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,9 +109,17 @@ func (c *accountClient) GetByID(ctx context.Context, in *GetByIDReq, opts ...grp
 // for forward compatibility
 type AccountServer interface {
 	Ping(context.Context, *Empty) (*Result, error)
-	SmsLogin(context.Context, *SmsLoginReq) (*SmsLoginResp, error)
+	// 发送验证码
+	SendVerificationCode(context.Context, *SendVerificationCodeReq) (*Empty, error)
+	// 登录
+	Login(context.Context, *LoginReq) (*LoginResp, error)
+	// 获取小程序授权登录二维码
+	GetMiniQRCode(context.Context, *GetMiniQRCodeReq) (*GetMiniQRCodeResp, error)
+	// 小程序登录
 	MiniLogin(context.Context, *MiniLoginReq) (*MiniLoginResp, error)
+	// 更新用户信息
 	UpdatesUser(context.Context, *UpdatesUserReq) (*Empty, error)
+	// 获取用户信息
 	GetByID(context.Context, *GetByIDReq) (*GetByIDResp, error)
 	mustEmbedUnimplementedAccountServer()
 }
@@ -97,8 +131,14 @@ type UnimplementedAccountServer struct {
 func (UnimplementedAccountServer) Ping(context.Context, *Empty) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedAccountServer) SmsLogin(context.Context, *SmsLoginReq) (*SmsLoginResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SmsLogin not implemented")
+func (UnimplementedAccountServer) SendVerificationCode(context.Context, *SendVerificationCodeReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendVerificationCode not implemented")
+}
+func (UnimplementedAccountServer) Login(context.Context, *LoginReq) (*LoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAccountServer) GetMiniQRCode(context.Context, *GetMiniQRCodeReq) (*GetMiniQRCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMiniQRCode not implemented")
 }
 func (UnimplementedAccountServer) MiniLogin(context.Context, *MiniLoginReq) (*MiniLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MiniLogin not implemented")
@@ -140,20 +180,56 @@ func _Account_Ping_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Account_SmsLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SmsLoginReq)
+func _Account_SendVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendVerificationCodeReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServer).SmsLogin(ctx, in)
+		return srv.(AccountServer).SendVerificationCode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/task_system.scheduler.v1.Account/SmsLogin",
+		FullMethod: "/task_system.scheduler.v1.Account/SendVerificationCode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServer).SmsLogin(ctx, req.(*SmsLoginReq))
+		return srv.(AccountServer).SendVerificationCode(ctx, req.(*SendVerificationCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Account_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/task_system.scheduler.v1.Account/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).Login(ctx, req.(*LoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Account_GetMiniQRCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMiniQRCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).GetMiniQRCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/task_system.scheduler.v1.Account/GetMiniQRCode",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).GetMiniQRCode(ctx, req.(*GetMiniQRCodeReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -224,8 +300,16 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Account_Ping_Handler,
 		},
 		{
-			MethodName: "SmsLogin",
-			Handler:    _Account_SmsLogin_Handler,
+			MethodName: "SendVerificationCode",
+			Handler:    _Account_SendVerificationCode_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _Account_Login_Handler,
+		},
+		{
+			MethodName: "GetMiniQRCode",
+			Handler:    _Account_GetMiniQRCode_Handler,
 		},
 		{
 			MethodName: "MiniLogin",
