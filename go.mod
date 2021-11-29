@@ -3,7 +3,7 @@ module account
 go 1.17
 
 require (
-	github.com/comeonjy/go-kit v0.0.0-20211017140225-62f22716fd67
+	github.com/comeonjy/go-kit v0.0.3-0.20211103094621-03dae02b3677
 	github.com/envoyproxy/protoc-gen-validate v0.6.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/uuid v1.3.0
