@@ -6,13 +6,13 @@ package cmd
 import (
 	"context"
 
-	"account/configs"
+	"github.com/comeonjy/account/configs"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 	"github.com/google/wire"
 
-	"account/internal/data"
-	"account/internal/server"
-	"account/internal/service"
+	"github.com/comeonjy/account/internal/data"
+	"github.com/comeonjy/account/internal/server"
+	"github.com/comeonjy/account/internal/service"
 )
 
 func InitApp(ctx context.Context,logger *xlog.Logger) *App {

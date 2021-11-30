@@ -2,57 +2,58 @@ package configs
 
 import (
 	"context"
-	"fmt"
-	"log"
-	"sync/atomic"
 
-	"account/pkg/consts"
+	"github.com/comeonjy/account/pkg/consts"
 	"github.com/comeonjy/go-kit/pkg/xconfig"
 	"github.com/comeonjy/go-kit/pkg/xconfig/apollo"
 	"github.com/comeonjy/go-kit/pkg/xenv"
 	"github.com/google/wire"
 )
 
-func init()  {
-	xenv.Init(consts.AppName, consts.EnvMap)
-}
-
 var ProviderSet = wire.NewSet(NewConfig)
 
-var _cfg atomic.Value
-
+// Interface 对外暴露接口（用于功能扩展）
 type Interface interface {
 	Get() Config
+	xconfig.ReloadConfigInterface
 }
 
-func (Config) Get() Config {
-	return _cfg.Load().(Config)
+// 内部配置类载体
+type config struct {
+	xconfig.IConfig
 }
 
-func NewConfig(ctx context.Context) Interface {
-	c := xconfig.New(
-		xconfig.WithContext(ctx),
-		xconfig.WithSource(apollo.NewSource(xenv.GetEnv(consts.ApolloUrl), consts.ApolloAppID, consts.ApolloCluster, consts.ApolloNamespace, xenv.GetEnv(consts.ApolloSecret))),
-	)
+// Get 获取配置
+func (c *config) Get() Config {
+	return c.LoadValue().(Config)
+}
+
+// ReloadConfig 实现重载配置 xconfig.ReloadConfigInterface
+func (c *config) ReloadConfig() error {
+	if err := c.Load(); err != nil {
+		return err
+	}
 	var tempConf Config
 	if err := c.Scan(&tempConf); err != nil {
-		panic(fmt.Sprintf("config scan: %v", err))
+		return err
 	}
-	_cfg.Store(tempConf)
-
-	if err := c.Watch(func(config *xconfig.Config) {
-		if err := config.Scan(&tempConf); err != nil {
-			log.Println("config watch exit:", err)
-			return
-		}
-		if err := tempConf.Validate(); err != nil {
-			log.Println("invalid config value:", err)
-			return
-		}
-		_cfg.Store(tempConf)
-	}); err != nil {
-		panic(fmt.Sprintf("config watch: %v", err))
+	if err := tempConf.Validate(); err != nil {
+		return err
 	}
+	c.StoreValue(tempConf)
+	return nil
+}
 
-	return _cfg.Load().(Config)
+// NewConfig 获取配置
+func NewConfig(ctx context.Context) Interface {
+	cfg := &config{
+		xconfig.New(
+			xconfig.WithContext(ctx),
+			xconfig.WithSource(apollo.NewSource(xenv.GetEnv(consts.ApolloUrl), consts.ApolloAppID, consts.ApolloCluster, consts.ApolloNamespace, xenv.GetEnv(consts.ApolloSecret))),
+		),
+	}
+	if err := cfg.ReloadConfig(); err != nil {
+		panic(err)
+	}
+	return cfg
 }

@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"account/configs"
-	"account/pkg/tencent"
+	"github.com/comeonjy/account/configs"
+	"github.com/comeonjy/account/pkg/tencent"
 )
 
 func TestNewTenSms(t *testing.T) {

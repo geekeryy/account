@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"account/configs"
+	"github.com/comeonjy/account/configs"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 	"github.com/comeonjy/go-kit/pkg/xmysql"
 	"github.com/google/wire"

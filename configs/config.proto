@@ -55,7 +55,7 @@ message Config {
     (gogoproto.jsontag) = "redis_option"
   ];
   string email = 15 [
-    (validate.rules).string = {email:true},
+    (validate.rules).string = {ignore_empty:true},
     (gogoproto.jsontag) = "email"
   ];
 }

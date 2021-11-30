@@ -7,8 +7,8 @@ import (
 	"context"
 	"testing"
 
-	"account/configs"
-	"account/pkg/yunpian"
+	"github.com/comeonjy/account/configs"
+	"github.com/comeonjy/account/pkg/yunpian"
 )
 
 func TestSendCode(t *testing.T) {

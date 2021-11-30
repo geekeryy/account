@@ -6,11 +6,11 @@
 package cmd
 
 import (
-	"account/configs"
-	"account/internal/data"
-	"account/internal/server"
-	"account/internal/service"
 	"context"
+	"github.com/comeonjy/account/configs"
+	"github.com/comeonjy/account/internal/data"
+	"github.com/comeonjy/account/internal/server"
+	"github.com/comeonjy/account/internal/service"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 )
 
