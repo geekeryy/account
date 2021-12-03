@@ -2,57 +2,55 @@ package configs
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 	"log"
-	"sync/atomic"
 
-	"account/pkg/consts"
 	"github.com/comeonjy/go-kit/pkg/xconfig"
 	"github.com/comeonjy/go-kit/pkg/xconfig/apollo"
 	"github.com/comeonjy/go-kit/pkg/xenv"
 	"github.com/google/wire"
 )
 
-func init()  {
-	xenv.Init(consts.AppName, consts.EnvMap)
-}
-
 var ProviderSet = wire.NewSet(NewConfig)
 
-var _cfg atomic.Value
-
+// Interface 对外暴露接口（用于功能扩展）
 type Interface interface {
 	Get() Config
+	xconfig.ReloadConfigInterface
 }
 
-func (Config) Get() Config {
-	return _cfg.Load().(Config)
+// 内部配置类载体
+type config struct {
+	xconfig.IConfig
 }
 
+// Get 获取配置
+func (c *config) Get() Config {
+	return c.LoadValue().(Config)
+}
+
+func (c *config) ReloadConfig() error {
+	return c.ReLoad()
+}
+
+func storeHandler(data []byte) interface{} {
+	conf := Config{}
+	if err := json.Unmarshal(data, &conf); err != nil {
+		log.Println(err)
+		return nil
+	}
+	return conf
+}
+
+// NewConfig 获取配置
 func NewConfig(ctx context.Context) Interface {
-	c := xconfig.New(
-		xconfig.WithContext(ctx),
-		xconfig.WithSource(apollo.NewSource(xenv.GetEnv(consts.ApolloUrl), consts.ApolloAppID, consts.ApolloCluster, consts.ApolloNamespace, xenv.GetEnv(consts.ApolloSecret))),
-	)
-	var tempConf Config
-	if err := c.Scan(&tempConf); err != nil {
-		panic(fmt.Sprintf("config scan: %v", err))
+	cfg := &config{
+		xconfig.New(ctx,
+			apollo.NewSource(xenv.GetEnv(xenv.ApolloUrl), xenv.GetEnv(xenv.ApolloAppID), xenv.GetApolloCluster("default"), xenv.GetApolloSecret(), xenv.GetApolloNamespace("grpc"),xenv.GetApolloNamespace("common")),
+			storeHandler),
 	}
-	_cfg.Store(tempConf)
-
-	if err := c.Watch(func(config *xconfig.Config) {
-		if err := config.Scan(&tempConf); err != nil {
-			log.Println("config watch exit:", err)
-			return
-		}
-		if err := tempConf.Validate(); err != nil {
-			log.Println("invalid config value:", err)
-			return
-		}
-		_cfg.Store(tempConf)
-	}); err != nil {
-		panic(fmt.Sprintf("config watch: %v", err))
+	if err := cfg.ReLoad(); err != nil {
+		panic(err)
 	}
-
-	return _cfg.Load().(Config)
+	return cfg
 }

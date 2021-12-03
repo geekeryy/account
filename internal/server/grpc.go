@@ -12,16 +12,15 @@ import (
 	"account/api/v1"
 	"account/configs"
 	"account/internal/service"
-	"account/pkg/consts"
 )
 
 var ProviderSet = wire.NewSet(NewGrpcServer, NewHttpServer)
 
-func NewGrpcServer(srv *service.AccountService, conf configs.Interface,logger *xlog.Logger) *grpc.Server {
+func NewGrpcServer(srv *service.AccountService, conf configs.Interface, logger *xlog.Logger) *grpc.Server {
 	server := grpc.NewServer(
 		grpc.ConnectionTimeout(2*time.Second),
 		grpc.ChainUnaryInterceptor(
-			xmiddleware.GrpcLogger(consts.TraceName,logger), xmiddleware.GrpcValidate, xmiddleware.GrpcRecover(logger), xmiddleware.GrpcAuth, xmiddleware.GrpcApm(conf.Get().ApmUrl, consts.AppName, consts.AppVersion, xenv.GetEnv(consts.AppEnv))),
+			xmiddleware.GrpcLogger(xenv.GetEnv(xenv.TraceName), logger), xmiddleware.GrpcValidate, xmiddleware.GrpcRecover(logger), xmiddleware.GrpcAuth, xmiddleware.GrpcApm(conf.Get().ApmUrl, xenv.GetEnv(xenv.AppName), xenv.GetEnv(xenv.AppVersion), xenv.GetEnv(xenv.AppEnv))),
 	)
 	v1.RegisterAccountServer(server, srv)
 	return server

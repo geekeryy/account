@@ -7,7 +7,7 @@ import (
 
 	"account/api/v1"
 	"account/configs"
-	"account/pkg/consts"
+	"github.com/comeonjy/go-kit/pkg/xenv"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 	"github.com/comeonjy/go-kit/pkg/xmiddleware"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -18,7 +18,7 @@ func NewHttpServer(ctx context.Context, conf configs.Interface, logger *xlog.Log
 	mux := runtime.NewServeMux(runtime.WithErrorHandler(xmiddleware.HttpErrorHandler(logger)))
 	server := http.Server{
 		Addr:              conf.Get().HttpAddr,
-		Handler:           xmiddleware.HttpUse(mux, HttpToken, xmiddleware.HttpLogger(consts.TraceName, logger)),
+		Handler:           xmiddleware.HttpUse(mux, HttpToken, xmiddleware.HttpLogger(xenv.GetEnv(xenv.TraceName), logger)),
 		ReadHeaderTimeout: 2 * time.Second,
 		WriteTimeout:      2 * time.Second,
 	}
