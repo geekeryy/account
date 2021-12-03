@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"testing"
 
-	"account/pkg/util"
+	"github.com/comeonjy/account/pkg/util"
 )
 
 func TestMd5(t *testing.T) {

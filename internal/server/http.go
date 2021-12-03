@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"account/api/v1"
-	"account/configs"
+	"github.com/comeonjy/account/api/v1"
+	"github.com/comeonjy/account/configs"
 	"github.com/comeonjy/go-kit/pkg/xenv"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 	"github.com/comeonjy/go-kit/pkg/xmiddleware"

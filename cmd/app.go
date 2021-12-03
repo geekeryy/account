@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"account/configs"
+	"github.com/comeonjy/account/configs"
 	"github.com/comeonjy/go-kit/pkg/xenv"
 	"github.com/comeonjy/go-kit/pkg/xsync"
 	"google.golang.org/grpc"
@@ -25,7 +25,7 @@ type App struct {
 	conf configs.Interface
 }
 
-func newApp( ctx context.Context,grpc *grpc.Server, http *http.Server, conf configs.Interface) *App {
+func newApp(ctx context.Context, grpc *grpc.Server, http *http.Server, conf configs.Interface) *App {
 	return &App{
 		grpc: grpc,
 		http: http,

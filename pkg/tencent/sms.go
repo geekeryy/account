@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"account/configs"
+	"github.com/comeonjy/account/configs"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	sms "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms/v20210111"

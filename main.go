@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"account/cmd"
-	"account/pkg/consts"
+	"github.com/comeonjy/account/cmd"
+	"github.com/comeonjy/account/pkg/consts"
 	"github.com/comeonjy/go-kit/pkg/xenv"
 	"github.com/comeonjy/go-kit/pkg/xlog"
 	"github.com/spf13/cobra"
