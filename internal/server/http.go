@@ -17,12 +17,12 @@ import (
 func NewHttpServer(ctx context.Context, conf configs.Interface, logger *xlog.Logger) *http.Server {
 	mux := runtime.NewServeMux(runtime.WithErrorHandler(xmiddleware.HttpErrorHandler(logger)))
 	server := http.Server{
-		Addr:              conf.Get().HttpAddr,
+		Addr:              ":" + xenv.GetEnv(xenv.HttpPort),
 		Handler:           xmiddleware.HttpUse(mux, HttpToken, xmiddleware.HttpLogger(xenv.GetEnv(xenv.TraceName), logger)),
 		ReadHeaderTimeout: 2 * time.Second,
 		WriteTimeout:      2 * time.Second,
 	}
-	if err := v1.RegisterAccountHandlerFromEndpoint(ctx, mux, conf.Get().GrpcAddr, []grpc.DialOption{grpc.WithInsecure()}); err != nil {
+	if err := v1.RegisterAccountHandlerFromEndpoint(ctx, mux, "localhost:"+xenv.GetEnv(xenv.GrpcPort), []grpc.DialOption{grpc.WithInsecure()}); err != nil {
 		panic("RegisterSchedulerHandlerFromEndpoint" + err.Error())
 	}
 	return &server

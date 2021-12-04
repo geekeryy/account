@@ -71,8 +71,12 @@ github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnht
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/xds/go v0.0.0-20210312221358-fbca930ec8ed/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/cncf/xds/go v0.0.0-20210805033703-aa0b78936158/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
+github.com/comeonjy/go-kit v0.0.0-20211204083859-bb6b946f3682 h1:k00TpBHjIcAYSGavgfRgRdeGM2EjpF9v7gwAa93pxF8=
+github.com/comeonjy/go-kit v0.0.0-20211204083859-bb6b946f3682/go.mod h1:cGTBfRwATkvdJedtCgVFKi1dsm/swvb7Vm2MhVDyVFg=
 github.com/comeonjy/go-kit v0.0.4-0.20211203092655-4eb3fb4690ec h1:VzqVese7xxN7lbibtH7Sgw9fob3x1sj3LPiLVij1LSQ=
 github.com/comeonjy/go-kit v0.0.4-0.20211203092655-4eb3fb4690ec/go.mod h1:cGTBfRwATkvdJedtCgVFKi1dsm/swvb7Vm2MhVDyVFg=
+github.com/comeonjy/go-kit v0.0.5 h1:m43oJZPhSn1jYr+sLzfxLYyoK2ZJQZByRl2J00lAVsw=
+github.com/comeonjy/go-kit v0.0.5/go.mod h1:cGTBfRwATkvdJedtCgVFKi1dsm/swvb7Vm2MhVDyVFg=
 github.com/coreos/go-semver v0.3.0/go.mod h1:nnelYz7RCh+5ahJtPPxZlU+153eP4D4r3EedlOD2RNk=
 github.com/coreos/go-systemd/v22 v22.3.2/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.0/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
