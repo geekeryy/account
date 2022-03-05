@@ -13,6 +13,29 @@ import (
 
 var ProviderSet = wire.NewSet(NewConfig)
 
+type Config struct {
+	Mode                 string `json:"mode"`
+	GrpcAddr             string `json:"grpc_addr"`
+	HttpAddr             string `json:"http_addr"`
+	PprofAddr            string `json:"pprof_addr"`
+	ApmUrl               string `json:"apm_url"`
+	MysqlConf            string `json:"mysql_conf"`
+	TenSecretId          string `json:"ten_secret_id"`
+	TenSecretKey         string `json:"ten_secret_key"`
+	TenSmsConf           string `json:"ten_sms_conf"`
+	WechatMiniAppid      string `json:"wechat_mini_appid"`
+	WechatMiniSecret     string `json:"wechat_mini_secret"`
+	JwtKey               string `json:"jwt_key"`
+	YunpianApiKey        string `json:"yunpian_api_key"`
+	RedisOption          string `json:"redis_option"`
+	Email                string `json:"email"`
+
+}
+
+func (c *Config) Validate() error {
+	return nil
+}
+
 // Interface 对外暴露接口（用于功能扩展）
 type Interface interface {
 	Get() Config
@@ -37,7 +60,9 @@ func storeHandler(data []byte) interface{} {
 	conf := Config{}
 	if err := json.Unmarshal(data, &conf); err != nil {
 		log.Println(err)
-		return nil
+	}
+	if err := conf.Validate(); err != nil {
+		log.Println(err)
 	}
 	return conf
 }
@@ -46,11 +71,8 @@ func storeHandler(data []byte) interface{} {
 func NewConfig(ctx context.Context) Interface {
 	cfg := &config{
 		xconfig.New(ctx,
-			apollo.NewSource(xenv.GetEnv(xenv.ApolloUrl), xenv.GetEnv(xenv.ApolloAppID), xenv.GetApolloCluster("default"), xenv.GetApolloSecret(), xenv.GetApolloNamespace("grpc"),xenv.GetApolloNamespace("common")),
+			apollo.NewSource(xenv.GetEnv(xenv.ApolloUrl), xenv.GetEnv(xenv.ApolloAppID), xenv.GetApolloCluster("default"), xenv.GetApolloSecret(), xenv.GetApolloNamespace("grpc"), xenv.GetApolloNamespace("common")),
 			storeHandler),
-	}
-	if err := cfg.ReLoad(); err != nil {
-		panic(err)
 	}
 	return cfg
 }
