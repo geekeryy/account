@@ -3,10 +3,9 @@ module github.com/comeonjy/account
 go 1.17
 
 require (
-	github.com/comeonjy/go-kit v0.0.6-0.20211217101337-f1a59188ee76
+	github.com/comeonjy/go-kit v0.0.0-20220221063528-e0257b4806d7
 	github.com/envoyproxy/protoc-gen-validate v0.6.1
 	github.com/go-redis/redis/v8 v8.11.4
-	github.com/gogo/protobuf v1.3.2
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0

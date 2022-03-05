@@ -1,15 +1,15 @@
-# cat env.make
-# DOCKER_PSW:=xxx
-# DOCKER_USR:=xxx
-# IMAGES_REPO:=ccr.ccs.tencentyun.com/xxx
-# REPO_DOMAIN:=ccr.ccs.tencentyun.com
-include env.make
+# 镜像仓库配置
+# export DOCKER_PSW=xxx
+# export DOCKER_USR=xxx
+# export IMAGES_REPO=ccr.ccs.tencentyun.com/xxx
+# export REPO_DOMAIN=ccr.ccs.tencentyun.com
+
 
 # 镜像tag
 IMAGE_TAG:=v0.0.1
 
 SERVER_NAME:=account
-
+CONTAINER_NAME:=account
 
 # 自动生成文件
 g:
@@ -41,3 +41,9 @@ docker:
 	docker build -t $(SERVER_NAME):$(IMAGE_TAG) .
 	rm main
 	docker run --rm -p 8080:8080 -p 8081:8081 -p 6060:6060 -d --name $(SERVER_NAME)  $(SERVER_NAME):$(IMAGE_TAG)
+
+# 本地调试
+debug-dev:export APP_ENV=dev
+debug-dev:
+	go build -gcflags "all=-N -l" main.go
+	dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec ./main
