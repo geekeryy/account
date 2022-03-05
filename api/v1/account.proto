@@ -24,6 +24,14 @@ service Account{
     };
   }
 
+  // 鉴权
+  rpc Auth(AuthReq) returns (AuthResp){
+    option (google.api.http) = {
+      post: "/v1/auth",
+      body: "*"
+    };
+  }
+
   // 登录
   rpc Login(LoginReq) returns (LoginResp){
     option (google.api.http) = {
@@ -80,6 +88,16 @@ message SendVerificationCodeReq{
   string type = 2 [
     (validate.rules).string = {in:["mobile", "email"]}
   ];
+}
+
+message AuthReq{
+  string token = 1 [
+    (validate.rules).string = {min_len:1}
+  ];
+}
+
+message AuthResp{
+
 }
 
 message LoginReq{

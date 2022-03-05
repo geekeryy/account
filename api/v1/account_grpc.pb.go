@@ -21,6 +21,8 @@ type AccountClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Result, error)
 	// 发送验证码
 	SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Empty, error)
+	// 鉴权
+	Auth(ctx context.Context, in *AuthReq, opts ...grpc.CallOption) (*AuthResp, error)
 	// 登录
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
 	// 获取小程序授权登录二维码
@@ -53,6 +55,15 @@ func (c *accountClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOp
 func (c *accountClient) SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/SendVerificationCode", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountClient) Auth(ctx context.Context, in *AuthReq, opts ...grpc.CallOption) (*AuthResp, error) {
+	out := new(AuthResp)
+	err := c.cc.Invoke(ctx, "/task_system.scheduler.v1.Account/Auth", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -111,6 +122,8 @@ type AccountServer interface {
 	Ping(context.Context, *Empty) (*Result, error)
 	// 发送验证码
 	SendVerificationCode(context.Context, *SendVerificationCodeReq) (*Empty, error)
+	// 鉴权
+	Auth(context.Context, *AuthReq) (*AuthResp, error)
 	// 登录
 	Login(context.Context, *LoginReq) (*LoginResp, error)
 	// 获取小程序授权登录二维码
@@ -133,6 +146,9 @@ func (UnimplementedAccountServer) Ping(context.Context, *Empty) (*Result, error)
 }
 func (UnimplementedAccountServer) SendVerificationCode(context.Context, *SendVerificationCodeReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendVerificationCode not implemented")
+}
+func (UnimplementedAccountServer) Auth(context.Context, *AuthReq) (*AuthResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Auth not implemented")
 }
 func (UnimplementedAccountServer) Login(context.Context, *LoginReq) (*LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
@@ -194,6 +210,24 @@ func _Account_SendVerificationCode_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountServer).SendVerificationCode(ctx, req.(*SendVerificationCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Account_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).Auth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/task_system.scheduler.v1.Account/Auth",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).Auth(ctx, req.(*AuthReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -302,6 +336,10 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendVerificationCode",
 			Handler:    _Account_SendVerificationCode_Handler,
+		},
+		{
+			MethodName: "Auth",
+			Handler:    _Account_Auth_Handler,
 		},
 		{
 			MethodName: "Login",
