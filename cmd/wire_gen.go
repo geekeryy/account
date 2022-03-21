@@ -9,7 +9,7 @@ package cmd
 import (
 	"context"
 	"github.com/comeonjy/account/configs"
-	"github.com/comeonjy/account/internal/data"
+	"github.com/comeonjy/account/internal/infra/persistence"
 	"github.com/comeonjy/account/internal/server"
 	"github.com/comeonjy/account/internal/service"
 	"github.com/comeonjy/go-kit/pkg/xlog"
@@ -23,8 +23,8 @@ import (
 
 func InitApp(ctx context.Context, logger *xlog.Logger) *App {
 	configsInterface := configs.NewConfig(ctx)
-	dataData := data.NewData(configsInterface, logger)
-	accountRepo := data.NewAccountRepo(dataData)
+	data := persistence.NewData(configsInterface, logger)
+	accountRepo := persistence.NewAccountRepo(data)
 	accountService := service.NewAccountService(configsInterface, accountRepo, logger)
 	grpcServer := server.NewGrpcServer(accountService, configsInterface, logger)
 	httpServer := server.NewHttpServer(ctx, configsInterface, logger)

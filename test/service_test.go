@@ -1,12 +1,22 @@
 package test
 
 import (
-	"log"
+	"context"
 	"testing"
 
-	"github.com/google/uuid"
+	"github.com/comeonjy/go-kit/grpc/reloadconfig"
+	"google.golang.org/grpc"
 )
 
 func TestService_Ping(t *testing.T) {
-	log.Println(uuid.NewString())
+	dial, err := grpc.Dial("localhost:8081", grpc.WithInsecure())
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	_, err = reloadconfig.NewReloadConfigClient(dial).ReloadConfig(context.Background(), &reloadconfig.Empty{})
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }

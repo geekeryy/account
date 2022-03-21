@@ -5,31 +5,28 @@ import (
 	"encoding/json"
 	"log"
 
+	"github.com/google/wire"
+
 	"github.com/comeonjy/go-kit/pkg/xconfig"
 	"github.com/comeonjy/go-kit/pkg/xconfig/apollo"
 	"github.com/comeonjy/go-kit/pkg/xenv"
-	"github.com/google/wire"
 )
 
 var ProviderSet = wire.NewSet(NewConfig)
 
 type Config struct {
-	Mode                 string `json:"mode"`
-	GrpcAddr             string `json:"grpc_addr"`
-	HttpAddr             string `json:"http_addr"`
-	PprofAddr            string `json:"pprof_addr"`
-	ApmUrl               string `json:"apm_url"`
-	MysqlConf            string `json:"mysql_conf"`
-	TenSecretId          string `json:"ten_secret_id"`
-	TenSecretKey         string `json:"ten_secret_key"`
-	TenSmsConf           string `json:"ten_sms_conf"`
-	WechatMiniAppid      string `json:"wechat_mini_appid"`
-	WechatMiniSecret     string `json:"wechat_mini_secret"`
-	JwtKey               string `json:"jwt_key"`
-	YunpianApiKey        string `json:"yunpian_api_key"`
-	RedisOption          string `json:"redis_option"`
-	Email                string `json:"email"`
-
+	Mode             string `json:"mode"`
+	ApmUrl           string `json:"apm_url"`
+	MysqlConf        string `json:"mysql_conf"`
+	TenSecretId      string `json:"ten_secret_id"`
+	TenSecretKey     string `json:"ten_secret_key"`
+	TenSmsConf       string `json:"ten_sms_conf"`
+	WechatMiniAppid  string `json:"wechat_mini_appid"`
+	WechatMiniSecret string `json:"wechat_mini_secret"`
+	JwtKey           string `json:"jwt_key"`
+	YunpianApiKey    string `json:"yunpian_api_key"`
+	RedisOption      string `json:"redis_option"`
+	Email            string `json:"email"`
 }
 
 func (c *Config) Validate() error {
