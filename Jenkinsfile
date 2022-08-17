@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('demo1') {
       steps {
-        sleep 1
+        sh 'ls -la'
       }
     }
 
